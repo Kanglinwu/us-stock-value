@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <style type="text/css">
+        .red {
+            color: red;
+        }
+    </style>
+    <title>STOCK Query Page</title>
+</head>
+
+<body>
+    <div id="app">
+        <v-app id="inspire">
+            <div class="text-center">
+                <!-- alert notification -->
+                <v-overlay :value="overlay">
+                    <v-btn icon @click="overlay = false">
+                        <!-- default false -->
+                        <v-icon>mdi-close</v-icon>
+                    </v-btn>
+                    <v-alert type="error">
+                        [[error_message]]
+                    </v-alert>
+                </v-overlay>
+            </div>
+            <v-container fluid class="p-3">
+                <v-row :justify="justify">
+                    <v-col id="dropdown-example" class="d-flex align-center">
+                        <v-overflow-btn class='pa-0 ma-0' id="parnter" :rules="selectRules" :items="dropdown_font"
+                            label="Which stock?" editable target="#dropdown-example" @input="SelectPartner">
+                        </v-overflow-btn>
+                    </v-col>
+                    <v-col class="d-flex">
+                        <v-btn class='pa-0 ma-0' x-large color="success" v-on:click="Posttobackend()" depressed>List
+                            Query
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-row :justify="justify">
+                    <v-col cols="12" sm="6">
+                        <v-text-field v-model="target_stock_c" label="Which stock?" single-line outlined></v-text-field>
+                    </v-col>
+                    <v-col class="d-flex">
+                        <v-btn id='querybutton' class='pa-0 ma-0' x-large color="success" v-on:click="Posttobackend2()" depressed>Custom
+                            Query
+                        </v-btn>
+                    </v-col>
+                </v-row>
+                <v-row>
+                    <v-col v-if="target_stock">
+                        <a id="target_stock_hyper" :href="target_stock_l">[[target_stock]]</a>
+                        <div v-html="target_stock_desc"></div>
+                    </v-col>
+                    <v-col v-if="target_stock_error">
+                        <div v-html="target_stock_error"></div>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-app>
+    </div>
+</body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    Vue.component('vue-ctk-date-time-picker', window['vue-ctk-date-time-picker']);
+    var vm = new Vue({
+        el: '#app',
+        delimiters: ['[[', ']]'],
+        data: () => ({
+            dropdown_font: [],
+            selectRules: [
+                v => !!v || 'Required'
+            ],
+            v_srcaddress: null,
+            v_partner: null,
+            time_interval: null,
+            time_interval_string: null,
+            api_result: null,
+            current_string: null,
+            btn_status: 'open',
+            attack_category: [],
+            desserts: null,
+            overlay: false,
+            error_message: null,
+            alert: false,
+            alert_content: null,
+            attack_table: true,
+            justify: 'space-around',
+            target_stock: false,
+            target_stock_error: false,
+            target_stock_c: "",
+            target_stock_l: "",
+            target_stock_desc: ""
+        }),
+        vuetify: new Vuetify(),
+        created() {
+            this.initialize()
+        },
+        methods: {
+            initialize() {
+                axios.get('/allstock')
+                    .then(function (response) {
+                        console.log(response.data)
+                        vm.dropdown_font = response.data
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            SelectPartner: function (value) {
+                vm.v_partner = value
+            },
+            Posttobackend: function () {
+                target = vm.v_partner
+                vm.target_stock = false
+                vm.target_stock_l = false
+                vm.target_stock_error = false
+                vm.target_stock_desc = false
+                axios.get(`stock/${target}`)
+                    .then(function (response) {
+                        console.log(response)
+                        if ((response.data[2].error) == false) {
+                            vm.target_stock = response.data[0].name
+                            vm.target_stock_l = response.data[1].link
+                            vm.target_stock_desc = response.data[3].desc
+                        } else {
+                            vm.target_stock_error = response.data
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            Posttobackend2: function () {
+                target = vm.target_stock_c
+                vm.target_stock = false
+                vm.target_stock_l = false
+                vm.target_stock_error = false
+                vm.target_stock_desc = false
+                axios.get(`stock/${target}`)
+                    .then(function (response) {
+                        console.log(response)
+                        if ((response.data[2].error) == false) {
+                            vm.target_stock = response.data[0].name
+                            vm.target_stock_l = response.data[1].link
+                            vm.target_stock_desc = response.data[3].desc
+                        } else {
+                            vm.target_stock_error = response.data
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        }
+    })
+</script>
+
+</html>

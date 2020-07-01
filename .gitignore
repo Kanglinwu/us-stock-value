@@ -1,0 +1,5 @@
+.vscode/
+venv/
+.vscode-janus-debug
+__pycache__/
+code/static/node_modules/
