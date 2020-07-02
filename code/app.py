@@ -12,7 +12,24 @@ from win32com.client import Dispatch
 import pythoncom
 # import asyncio
 
+import os
+import shutil
+
 app = Flask(__name__)
+
+@app.route('/dutyupdate')
+def dutyupdate():
+    print('downloading the file')
+    dOaction = os.startfile('getexcel.url')
+    dst_path = r"\\10.7.6.199\c$\wamp64\www\handover\dutycheck\code\Roster_2020.xlsx"
+    print('process the await')
+    time.sleep(3)
+    print('start copy to .199')
+    shutil.copy2(r'C:\Users\09060.gary.wu\Downloads\Roster_2020.xlsx', dst_path)
+    time.sleep(3)
+    print('delete the file')
+    os.remove(r'C:\Users\09060.gary.wu\Downloads\Roster_2020.xlsx')
+    return 'ok'
 
 @app.route('/hm')
 def hmfunction():
@@ -66,6 +83,7 @@ def index():
 def index3(stock):
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
     headers = {"User-Agent": user_agent}  #请求头,headers是一个字典类型
+    A
     
     html_statistics = requests.get(f'https://finance.yahoo.com/quote/{stock}/key-statistics?p={stock}', headers=headers).text
     
