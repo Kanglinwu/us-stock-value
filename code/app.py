@@ -83,7 +83,6 @@ def index():
 def index3(stock):
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
     headers = {"User-Agent": user_agent}  #请求头,headers是一个字典类型
-    A
     
     html_statistics = requests.get(f'https://finance.yahoo.com/quote/{stock}/key-statistics?p={stock}', headers=headers).text
     
