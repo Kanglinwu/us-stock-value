@@ -12,6 +12,7 @@ from win32com.client import Dispatch
 import pythoncom
 # import asyncio
 
+# using the shitil to copy the excel from local to remote server (10.7.6.199)
 import os
 import shutil
 
@@ -28,7 +29,6 @@ def dutyupdate():
     requests.get('http://10.7.6.199:4998/stopExcel')
     time.sleep(1)
     print('start copy to .199')
-    # os.remove(dst_path)
     shutil.copy(r'C:\Users\09060.gary.wu\Downloads\Roster_2020.xlsx', dst_path)
     time.sleep(3)
     print('run the .199 excel')
