@@ -23,10 +23,16 @@ def dutyupdate():
     dOaction = os.startfile('getexcel.url')
     dst_path = r"\\10.7.6.199\c$\wamp64\www\handover\dutycheck\code\Roster_2020.xlsx"
     print('process the await')
-    time.sleep(3)
+    time.sleep(1)
+    print('stop the .199 excel')
+    requests.get('http://10.7.6.199:4998/stopExcel')
+    time.sleep(1)
     print('start copy to .199')
-    shutil.copy2(r'C:\Users\09060.gary.wu\Downloads\Roster_2020.xlsx', dst_path)
+    # os.remove(dst_path)
+    shutil.copy(r'C:\Users\09060.gary.wu\Downloads\Roster_2020.xlsx', dst_path)
     time.sleep(3)
+    print('run the .199 excel')
+    requests.get('http://10.7.6.199:4998/runExcel')
     print('delete the file')
     os.remove(r'C:\Users\09060.gary.wu\Downloads\Roster_2020.xlsx')
     return 'ok'
@@ -43,6 +49,7 @@ def collect():
     # for x in count_list:
     #     print(f'https://www.gurufocus.com/stock_list.php?m_country[]=USA&m_country[]=_India&m_country[]=IND&m_country[]=PAK&r=USA&p={x}&n=30')
 
+    A
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"
     headers = {"User-Agent": user_agent}  #请求头,headers是一个字典类型
     
