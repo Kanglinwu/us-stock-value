@@ -18,6 +18,10 @@ import shutil
 
 app = Flask(__name__)
 
+@app.route('/downloadexecl')
+def downloadexcel():
+    return 'ok'
+
 @app.route('/dutyupdate')
 def dutyupdate():
     print('downloading the file')
@@ -109,9 +113,6 @@ def index3(stock):
     print(so_number)
     return 'ok'
     
-    
-    
-
 @app.route('/stock/<stock>')
 def index2(stock):
     
