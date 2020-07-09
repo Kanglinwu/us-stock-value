@@ -36,27 +36,36 @@
             </div>
             <v-container fluid class="p-3">
                 <v-row :justify="justify">
-                    <v-col id="dropdown-example" class="d-flex align-center">
-                        <v-overflow-btn class='pa-0 ma-0' id="parnter" :rules="selectRules" :items="dropdown_font"
+                    <!-- <v-col id="dropdown-example" class="d-flex align-center"> -->
+                        <!-- <v-overflow-btn class='pa-0 ma-0' id="parnter" :rules="selectRules" :items="dropdown_font"
                             label="Which stock?" editable target="#dropdown-example" @input="SelectPartner">
-                        </v-overflow-btn>
-                    </v-col>
-                    <v-col class="d-flex">
-                        <v-btn class='pa-0 ma-0' x-large color="success" v-on:click="Posttobackend()" depressed>List
-                            Query
-                        </v-btn>
-                    </v-col>
-                </v-row>
-                <v-row :justify="justify">
+                        </v-overflow-btn> -->
                     <v-col cols="12" sm="6">
-                        <v-text-field v-model="target_stock_c" label="Which stock?" single-line outlined></v-text-field>
+                        <v-text-field v-model="target_stock_old" label="Which stock?" single-line outlined></v-text-field>
                     </v-col>
+                    <!-- </v-col> -->
                     <v-col class="d-flex">
-                        <v-btn id='querybutton' class='pa-0 ma-0' x-large color="success" v-on:click="Posttobackend2()" depressed>Custom
+                        <!-- <v-btn class='pa-0 ma-0' x-large color="success" v-on:click="Posttobackend()" depressed>List
+                            Query
+                        </v-btn> -->
+                        <v-btn id='querybutton1' class='pa-2 mr-2' x-large color="success" v-on:click="Posttobackend()" depressed>Old
+                            Query
+                        </v-btn>
+                        <v-btn id='querybutton' class='pa-2 ma-0' x-large color="success" v-on:click="Posttobackend2()" depressed>New
                             Query
                         </v-btn>
                     </v-col>
                 </v-row>
+                <!-- <v-row :justify="justify">
+                    <v-col cols="12" sm="6">
+                        <v-text-field v-model="target_stock_new" label="Which stock?" single-line outlined></v-text-field>
+                    </v-col>
+                    <v-col class="d-flex">
+                        <v-btn id='querybutton' class='pa-0 ma-0' x-large color="success" v-on:click="Posttobackend2()" depressed>New
+                            Query
+                        </v-btn>
+                    </v-col>
+                </v-row> -->
                 <v-row>
                     <v-col v-if="target_stock">
                         <a id="target_stock_hyper" :href="target_stock_l">[[target_stock]]</a>
@@ -98,7 +107,8 @@
             justify: 'space-around',
             target_stock: false,
             target_stock_error: false,
-            target_stock_c: "",
+            target_stock_new: "",
+            target_stock_old: "",
             target_stock_l: "",
             target_stock_desc: ""
         }),
@@ -121,7 +131,7 @@
                 vm.v_partner = value
             },
             Posttobackend: function () {
-                target = vm.v_partner
+                target = vm.target_stock_old
                 vm.target_stock = false
                 vm.target_stock_l = false
                 vm.target_stock_error = false
@@ -142,12 +152,12 @@
                     });
             },
             Posttobackend2: function () {
-                target = vm.target_stock_c
+                target = vm.target_stock_old
                 vm.target_stock = false
                 vm.target_stock_l = false
                 vm.target_stock_error = false
                 vm.target_stock_desc = false
-                axios.get(`stock/${target}`)
+                axios.get(`stock_ver2/${target}`)
                     .then(function (response) {
                         console.log(response)
                         if ((response.data[2].error) == false) {
