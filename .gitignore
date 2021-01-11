@@ -4,3 +4,4 @@ venv/
 __pycache__/
 code/static/node_modules/
 chromedriver.exe
+run199excel.bat
