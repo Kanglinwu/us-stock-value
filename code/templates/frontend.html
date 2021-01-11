@@ -48,10 +48,10 @@
                         <!-- <v-btn class='pa-0 ma-0' x-large color="success" v-on:click="Posttobackend()" depressed>List
                             Query
                         </v-btn> -->
-                        <v-btn id='querybutton1' class='pa-2 mr-2' x-large color="success" v-on:click="Posttobackend()" depressed>Old
+                        <v-btn v-bind:disabled="hasVoted" id='querybutton1' class='pa-2 mr-2' x-large color="success" v-on:click="Posttobackend" depressed>Old
                             Query
                         </v-btn>
-                        <v-btn id='querybutton' class='pa-2 ma-0' x-large color="success" v-on:click="Posttobackend2()" depressed>New
+                        <v-btn v-bind:disabled="hasVoted" id='querybutton' class='pa-2 ma-0' x-large color="success" v-on:click="Posttobackend2()" depressed>New
                             Query
                         </v-btn>
                     </v-col>
@@ -110,7 +110,8 @@
             target_stock_new: "",
             target_stock_old: "",
             target_stock_l: "",
-            target_stock_desc: ""
+            target_stock_desc: "",
+            hasVoted: false
         }),
         vuetify: new Vuetify(),
         created() {
@@ -130,7 +131,8 @@
             SelectPartner: function (value) {
                 vm.v_partner = value
             },
-            Posttobackend: function () {
+            Posttobackend(event) {
+                vm.hasVoted = true
                 target = vm.target_stock_old
                 vm.target_stock = false
                 vm.target_stock_l = false
@@ -146,13 +148,16 @@
                         } else {
                             vm.target_stock_error = response.data
                         }
+                        vm.hasVoted = false
                     })
                     .catch(function (error) {
                         console.log(error);
+                        vm.hasVoted = false
                     });
             },
             Posttobackend2: function () {
                 target = vm.target_stock_old
+                vm.hasVoted = true
                 vm.target_stock = false
                 vm.target_stock_l = false
                 vm.target_stock_error = false
@@ -167,9 +172,11 @@
                         } else {
                             vm.target_stock_error = response.data
                         }
+                        vm.hasVoted = false
                     })
                     .catch(function (error) {
                         console.log(error);
+                        vm.hasVoted = false
                     });
             }
         }
